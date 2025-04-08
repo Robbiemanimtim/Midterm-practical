@@ -1,0 +1,71 @@
+drop user saristore cascade;
+
+create user saristore identified by Changeme0;
+
+alter user saristore quota unlimited on DATA;
+
+alter user saristore quota unlimited on USERS;
+
+grant create session to saristore with admin option;
+
+grant connect to saristore;
+
+alter session set current_schema = saristore;
+
+drop table Item;
+drop table Customer;
+drop table Transactions;
+
+
+CREATE TABLE Item (
+    item_id VARCHAR(10) PRIMARY KEY,
+    item_desc VARCHAR(100),
+    unit_price DECIMAL(10, 2)
+);
+
+CREATE TABLE Customer (
+    cust_id NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    cust_name VARCHAR(100),
+    address VARCHAR(100),
+    contact_number VARCHAR(20)
+);
+
+CREATE TABLE Transactions (
+    trans_num NUMBER PRIMARY KEY,
+    trans_date DATE,
+    quantity NUMBER,
+    cust_id NUMBER,
+    item_id VARCHAR(10),
+    FOREIGN KEY (cust_id) REFERENCES Customer(cust_id),
+    FOREIGN KEY (item_id) REFERENCES Item(item_id)
+);
+
+
+
+  insert INTO into Customer (cust_id,cust_name,address,contact_num)
+  values('001','j. dela Cruz','Tagaytay','09191112223');
+  insert into customer (cust_id,cust_name,address,contact_num)
+  values('002','A. Kechum','Tagaytay','09191112223');
+  insert into customer (cust_id,cust_name,address,contact_num)
+  values('003','G. Viscon','Tagaytay','09191112223');
+
+ insert into Item (item_id,item_desc,unit_price)
+ values('01','Coocoo Cola','50.00');
+ insert into items (item_id,item_desc,unit_price)
+ values('02','Gardenya','25.00');
+ insert into items (item_id,item_desc,unit_price)
+ values('03','Stick U','60.00');
+
+ insert into transactions (trans_num,quantity,cust_id,item_id, trans_date)
+ values('1','1','001','1','2024-04-11');
+insert into transactions (trans_num,quantity,cust_id,item_id, trans_date)
+ values('1','2','001','2','2024-04-11');
+ insert into transactions (trans_num,quantity,cust_id,item_id, trans_date)
+ values('2','2','002','1','2024-04-11');
+ insert into transactions (trans_num,quantity,cust_id,item_id, trans_date)
+ values('3','1','003','2','2024-04-11');
+ insert into transactions (trans_num,quantity,cust_id,item_id, trans_date)
+ values('4','1','001','3','2024-04-11');
+
+
+ commit;
